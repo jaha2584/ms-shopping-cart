@@ -8,6 +8,7 @@ import com.shopping.paymentservice.dto.PaymentDto;
 import com.shopping.paymentservice.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/payments")
@@ -17,7 +18,7 @@ public class PaymentController {
     private PaymentService paymentService;
 
     @PostMapping
-    public PaymentDto makePayment(@RequestBody PaymentDto paymentDto) {
+    public PaymentDto makePayment(@Valid @RequestBody PaymentDto paymentDto) {
         return paymentService.processPayment(paymentDto);
     }
 }
