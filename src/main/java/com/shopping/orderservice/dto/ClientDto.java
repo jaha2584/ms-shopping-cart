@@ -15,21 +15,21 @@ import javax.validation.constraints.NotBlank;
 public class ClientDto {
 
     @Schema(description = "The unique identifier of the customer", example = "1")
-    private Long id;
+    private Long customerId;
 
     @NotBlank(message = "First name is required")
-    @Schema(description = "First name of the customer", example = "John")
+    @Schema(description = "First name of the customer", example = "Jose")
     private String firstName;
 
     @NotBlank(message = "Last name is required")
-    @Schema(description = "Last name of the customer", example = "Doe")
+    @Schema(description = "Last name of the customer", example = "Hernandez")
     private String lastName;
 
     @Email(message = "Email should be valid")
     @NotBlank(message = "Email is required")
-    @Schema(description = "Email address of the customer", example = "johndoe@example.com")
+    @Schema(description = "Email address of the customer", example = "jaha2584@gmail.com")
     private String email;
 
-    @Schema(description = "Phone number of the customer", example = "+123456789")
+    @Schema(description = "Phone number of the customer", example = "+504 95798869")
     private String phoneNumber;
 }

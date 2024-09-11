@@ -16,13 +16,12 @@ public class OrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long orderId;
 
-    @Column(nullable = false)
-    private String customerName;
+    @ManyToOne // Definimos la relación de muchos a uno con ClientEntity
+    @JoinColumn(name = "customer_id", nullable = false) 
+    private ClientEntity customer;
 
-    @Column(nullable = false)
-    private String customerEmail;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")

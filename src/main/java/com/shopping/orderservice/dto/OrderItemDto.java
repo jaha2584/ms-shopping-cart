@@ -22,6 +22,6 @@ public class OrderItemDto {
     @ApiModelProperty(value = "Quantity of the product ordered", example = "2")
     private Integer quantity;
 
-    @ApiModelProperty(value = "Price per unit of the product", example = "109.95")
-    private Double price;
+   @ApiModelProperty(value = "Price per unit of the product", example = "109.95")
+   private Double price;
 }

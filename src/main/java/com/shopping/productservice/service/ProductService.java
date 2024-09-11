@@ -22,7 +22,7 @@ public class ProductService {
         return restTemplate.getForObject(PRODUCTS_URL, ProductDto[].class);
     }
 
-    public ProductDto getProductById(Long id) {
+    public ProductDto getProductById(int id) {
         return restTemplate.getForObject(PRODUCT_BY_ID_URL, ProductDto.class, id);
     }
 }

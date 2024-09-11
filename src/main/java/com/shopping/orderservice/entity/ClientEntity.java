@@ -1,12 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.shopping.orderservice.entity;
 
-
-
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -14,11 +12,14 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name = "customers")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder // Añadir patrón Builder
 public class ClientEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long customerId;
 
     @NotBlank(message = "First name is required")
     private String firstName;
@@ -31,6 +32,6 @@ public class ClientEntity {
     private String email;
 
     private String phoneNumber;
-    
+
     // Additional fields (address, etc.)
 }
