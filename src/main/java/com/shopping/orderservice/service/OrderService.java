@@ -38,7 +38,7 @@ public class OrderService {
     }
 
     public OrderDto getOrderById(Long id) {
-        OrderEntity order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
+        OrderEntity order = orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Order not found"));
         return mapToDto(order);
     }
 
