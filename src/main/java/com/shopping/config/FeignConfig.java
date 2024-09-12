@@ -1,10 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.shopping.config;
+
 import feign.Client;
 import feign.okhttp.OkHttpClient;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import okhttp3.OkHttpClient.Builder;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -19,18 +18,18 @@ public class FeignConfig {
     @Bean
     public Client feignClient() {
         try {
-            // Configurar el SSLContext para ignorar certificados
+            // Configure SSLContext to ignore certificates
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, new TrustManager[]{
                 new X509TrustManager() {
                     @Override
                     public void checkClientTrusted(X509Certificate[] chain, String authType) {
-                        // No implementar verificación
+                        // No implementation
                     }
 
                     @Override
                     public void checkServerTrusted(X509Certificate[] chain, String authType) {
-                        // No implementar verificación
+                        // No implementation
                     }
 
                     @Override
@@ -40,7 +39,7 @@ public class FeignConfig {
                 }
             }, new java.security.SecureRandom());
 
-            // Crear OkHttpClient con la configuración de SSL personalizada
+            // Create OkHttpClient with SSL configuration and without proxy
             okhttp3.OkHttpClient okHttpClient = new Builder()
                     .sslSocketFactory(sslContext.getSocketFactory(), new X509TrustManager() {
                         @Override
@@ -56,11 +55,11 @@ public class FeignConfig {
                             return new X509Certificate[0];
                         }
                     })
-                    .hostnameVerifier((hostname, session) -> true) // Deshabilitar la verificación del nombre de host
+                    .hostnameVerifier((hostname, session) -> true) // Disable hostname verification
                     .build();
 
             return new OkHttpClient(okHttpClient);
-        } catch (Exception e) {
+        } catch (KeyManagementException | NoSuchAlgorithmException e) {
             throw new RuntimeException("Failed to create OkHttpClient", e);
         }
     }

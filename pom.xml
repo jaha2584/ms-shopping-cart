@@ -94,15 +94,29 @@
             <version>11.10</version>
             <type>jar</type>
         </dependency>
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>4.9.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
+     
+     
+       <!-- Dependencia para Feign -->
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-openfeign</artifactId>
+        <version>3.0.6</version> <!-- Asegúrate de usar la versión adecuada -->
+    </dependency>
+
+    <!-- Dependencia para OkHttp -->
+    <dependency>
+        <groupId>com.squareup.okhttp3</groupId>
+        <artifactId>okhttp</artifactId>
+        <version>4.9.3</version> <!-- Usa la última versión estable -->
+      <type>jar</type>
+    </dependency>
+
+    <!-- Dependencia para Feign OkHttp -->
+    <dependency>
+        <groupId>io.github.openfeign</groupId>
+        <artifactId>feign-okhttp</artifactId>
+        <version>11.0</version> <!-- Usa la versión adecuada -->
+    </dependency>
 
     </dependencies>
 
