@@ -1,6 +1,7 @@
 package com.shopping.paymentservice.dto;
 
 
+import com.shopping.exception.GeneralResponse;
 import lombok.Data;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -11,6 +12,8 @@ import javax.validation.constraints.Size;
 @Data
 public class PaymentDto {
 
+    private GeneralResponse generalResponse;
+    
     @NotNull(message = "Order ID cannot be null")
     @Schema(description = "The unique identifier of the order", example = "1")
     private Long orderId;

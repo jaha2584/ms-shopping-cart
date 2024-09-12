@@ -8,35 +8,25 @@ import com.shopping.orderservice.entity.OrderEntity;
 import com.shopping.orderservice.entity.OrderItemEntity;
 import com.shopping.orderservice.repository.ClientRepository;
 import com.shopping.orderservice.repository.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-/**
- * Service class for handling order-related operations.
- */
 @Service
 public class OrderService {
 
     private final OrderRepository orderRepository;
     private final ClientRepository clientRepository;
 
-    @Autowired
+    private static final String ORDER_NOT_FOUND = "Order not found";
+    private static final String NO_ORDERS_FOUND = "No orders have been created.";
+
     public OrderService(OrderRepository orderRepository, ClientRepository clientRepository) {
         this.orderRepository = orderRepository;
         this.clientRepository = clientRepository;
     }
 
-    /**
-     * Creates a new order and calculates the total amount based on order items.
-     * 
-     * @param orderDto The DTO containing order details.
-     * @return The created OrderDto.
-     */
     public OrderDto createOrder(OrderDto orderDto) {
         ClientEntity clientEntity = findOrCreateClient(orderDto.getCustomer());
 
@@ -53,30 +43,25 @@ public class OrderService {
         orderEntity.setStatus("PENDING");
 
         orderEntity = orderRepository.save(orderEntity);
+
         return mapToDto(orderEntity);
     }
 
-    /**
-     * Retrieves all orders and maps them to OrderDto.
-     * 
-     * @return List of OrderDto.
-     */
     public List<OrderDto> getAllOrders() {
-        return orderRepository.findAll().stream()
+        List<OrderEntity> orders = orderRepository.findAll();
+
+        if (orders.isEmpty()) {
+            throw new IllegalArgumentException(NO_ORDERS_FOUND);
+        }
+
+        return orders.stream()
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Retrieves an order by its ID and maps it to OrderDto.
-     * 
-     * @param id The ID of the order.
-     * @return The OrderDto.
-     * @throws IllegalArgumentException if the order is not found.
-     */
     public OrderDto getOrderById(Long id) {
         OrderEntity order = orderRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+                .orElseThrow(() -> new IllegalArgumentException(ORDER_NOT_FOUND));
         return mapToDto(order);
     }
 
@@ -87,7 +72,11 @@ public class OrderService {
 
     private ClientEntity saveNewClient(ClientDto clientDto) {
         ClientEntity clientEntity = new ClientEntity();
-        BeanUtils.copyProperties(clientDto, clientEntity);
+        clientEntity.setCustomerId(clientDto.getCustomerId());
+        clientEntity.setFirstName(clientDto.getFirstName());
+        clientEntity.setLastName(clientDto.getLastName());
+        clientEntity.setEmail(clientDto.getEmail());
+        clientEntity.setPhoneNumber(clientDto.getPhoneNumber());
         return clientRepository.save(clientEntity);
     }
 
@@ -100,11 +89,17 @@ public class OrderService {
     private OrderDto mapToDto(OrderEntity orderEntity) {
         OrderDto orderDto = new OrderDto();
         ClientDto clientDto = new ClientDto();
-        BeanUtils.copyProperties(orderEntity.getCustomer(), clientDto);
+        clientDto.setCustomerId(orderEntity.getCustomer().getCustomerId());
+        clientDto.setFirstName(orderEntity.getCustomer().getFirstName());
+        clientDto.setLastName(orderEntity.getCustomer().getLastName());
+        clientDto.setEmail(orderEntity.getCustomer().getEmail());
+        clientDto.setPhoneNumber(orderEntity.getCustomer().getPhoneNumber());
 
         orderDto.setOrderId(orderEntity.getOrderId());
         orderDto.setCustomer(clientDto);
-        orderDto.setItems(orderEntity.getItems().stream().map(this::mapToDto).collect(Collectors.toList()));
+        orderDto.setItems(orderEntity.getItems().stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList()));
         orderDto.setTotalAmount(orderEntity.getTotalAmount());
         orderDto.setStatus(orderEntity.getStatus());
 

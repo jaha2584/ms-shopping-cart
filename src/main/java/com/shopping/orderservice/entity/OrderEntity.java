@@ -4,6 +4,7 @@
  */
 package com.shopping.orderservice.entity;
 
+import com.shopping.exception.GeneralResponse;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -14,10 +15,13 @@ import java.util.List;
 @Table(name = "orders")
 public class OrderEntity {
 
+    
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
+    
     @ManyToOne // Definimos la relación de muchos a uno con ClientEntity
     @JoinColumn(name = "customer_id", nullable = false) 
     private ClientEntity customer;
